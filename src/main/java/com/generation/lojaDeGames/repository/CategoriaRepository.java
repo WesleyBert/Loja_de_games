@@ -9,7 +9,7 @@ import com.generation.lojaDeGames.model.Categoria;
 
 public interface CategoriaRepository extends JpaRepository<Categoria,Long> {
 
-	List<Categoria> findAll();
+	public List<Categoria> findAll();
 
 	public List <Categoria> findAllByPlataformaContainingIgnoreCase(@Param("plataforma") String plataforma);
 }

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.generation.lojaDeGames.model.Produto;
+import com.generation.lojaDeGames.repository.CategoriaRepository;
 import com.generation.lojaDeGames.repository.ProdutoRepository;
 
 import jakarta.validation.Valid;
@@ -29,6 +30,7 @@ public class ProdutoController {
 
 	@Autowired
 	private ProdutoRepository produtoRepository;
+	private CategoriaRepository categoriaRepository;
 	
 	@GetMapping
 	public ResponseEntity<List<Produto>> getAll(){
@@ -42,18 +44,18 @@ public class ProdutoController {
 				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
 	}
 	
-	@GetMapping("/nome/{nome}")
-	public ResponseEntity<List<Produto>> getByName(@PathVariable String nome){
-		return ResponseEntity.ok(produtoRepository.findAllByNameContainingIgoreCase(nome));
-	}
-	
 	@PostMapping
 	public ResponseEntity<Produto> post(@Valid @RequestBody Produto produto){
-		return produtoRepository.findById(produto.getId())
-				.map(resposta -> ResponseEntity.status(HttpStatus.CREATED)
-				.body(produtoRepository.save(produto)))
-				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+		//return produtoRepository.findById(produto.getId())
+			//	.map(resposta -> ResponseEntity.status(HttpStatus.CREATED)
+				//.body(produtoRepository.save(produto)))
+				//.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+		if (categoriaRepository.existsById(produto.getCategoria().getId()))
+			return ResponseEntity.status(HttpStatus.CREATED).body(produtoRepository.save(produto));
+
+		return ResponseEntity.badRequest().build();
 	}
+	
 	@ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {

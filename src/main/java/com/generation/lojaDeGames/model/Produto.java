@@ -1,10 +1,7 @@
 package com.generation.lojaDeGames.model;
 
-import java.math.BigDecimal;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,11 +23,11 @@ public class Produto {
 	@NotBlank(message = "O Atributo nome é obrigatorio")
 	private String nome;
 	
-	@NotNull(message = "O preço é obrigatório!")
+	//@NotNull(message = "O preço é obrigatório!")
 	@Positive(message = "O preço deve ser maior que zero!")
-	@Column(name="preco", precision=8, scale=2)
-	private BigDecimal preco;
+	private Float preco;
 	
+	@NotNull
 	private String descricao;
 	
 	@ManyToOne
@@ -53,11 +50,11 @@ public class Produto {
 		this.nome = nome;
 	}
 
-	public BigDecimal getPreco() {
+	public Float getPreco() {
 		return preco;
 	}
 
-	public void setPreco(BigDecimal preco) {
+	public void setPreco(Float preco) {
 		this.preco = preco;
 	}
 
